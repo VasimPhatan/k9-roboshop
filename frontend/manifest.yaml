@@ -1,63 +1,4 @@
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: web
-  namespace: roboshop
-  labels: # these labels belong to deployment
-    app: web
-    tier: web
-    project: roboshop
-spec:
-  replicas: 1
-  selector:
-    matchLabels: # these labels should match with pod
-      app: web
-      tier: web
-      project: roboshop
-  template: # this is the pod definition
-    metadata:
-      labels:
-        app: web
-        tier: web
-        project: roboshop
-    spec:
-      volumes:
-      - name: nginx-conf
-        configMap: 
-          name: web
-          items:
-          - key: nginx.conf
-            path: nginx.conf
-      containers:
-      - name: catalogue
-        image: vasimphatan/web:4.0.0
-        volumeMounts:
-        - name: nginx-conf
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
-          readOnly: true 
-      
-        
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: web
-  namespace: roboshop
-spec:
-  type: NodePort
-  selector:
-    app: web
-    tier: web
-    project: roboshop
-  ports:
-  - name: web-port
-    protocol: TCP
-    port: 80 # this port belongs to service
-    targetPort: 80 # this port belongs to container
-
----
 apiVersion: v1 
 kind: configMap
 metadata:
@@ -171,5 +112,67 @@ data:
     }
 
     }
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: roboshop
+  labels: # these labels belong to deployment
+    app: web
+    tier: web
+    project: roboshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # these labels should match with pod
+      app: web
+      tier: web
+      project: roboshop
+  template: # this is the pod definition
+    metadata:
+      labels:
+        app: web
+        tier: web
+        project: roboshop
+    spec:
+      volumes:
+      - name: nginx-conf
+        configMap: 
+          name: web
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+      containers:
+      - name: catalogue
+        image: vasimphatan/web:4.0.0
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+          readOnly: true 
+      
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: roboshop
+spec:
+  type: NodePort
+  selector:
+    app: web
+    tier: web
+    project: roboshop
+  ports:
+  - name: web-port
+    protocol: TCP
+    port: 80 # this port belongs to service
+    targetPort: 80 # this port belongs to container
+
+
 
 
