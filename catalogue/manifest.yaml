@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: catalogue
-        image: vasimphatan/catalogue:1.0.0
+        image: vasimphatan/catalogue:2.0.0
   
 ---
 apiVersion: v1 
