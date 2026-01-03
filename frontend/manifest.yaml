@@ -144,7 +144,7 @@ spec:
             path: nginx.conf
       containers:
       - name: catalogue
-        image: vasimphatan/web:1.0.0
+        image: vasimphatan/web:2.0.0
         resources:
           requests:
             cpu: "50m"
